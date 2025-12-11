@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Small App — Riddle Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* keep the app self-contained with small styles here */
+    body { font-family: Inter, system-ui, sans-serif; background:#0f0f0f; color:#eee; }
+    .app { max-width:700px; margin:40px auto; }
+    .riddle-card { min-height:120px; background:#111; border:1px solid #222; color:#fff; }
+    .btn-or { background: #ff6a00; color:#111; border: 1px solid rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <div class="container app">
+    <h1>Riddle Generator</h1>
+    <p>Click to get a random riddle. Try to answer before revealing the solution.</p>
+
+    <div class="card riddle-card mb-3 p-3">
+      <div id="riddleText" class="mb-3">Press "New Riddle" to begin.</div>
+      <div id="riddleAnswer" class="text-muted" style="display:none;"></div>
+    </div>
+
+    <div class="mb-3 d-flex gap-2 flex-wrap">
+      <button id="newBtn" class="btn btn-or">New Riddle</button>
+      <button id="showBtn" class="btn btn-outline-light">Show Answer</button>
+      <button id="copyBtn" class="btn btn-outline-light">Copy Riddle</button>
+    </div>
+
+    <div class="mb-3">
+      <input id="guess" class="form-control" placeholder="Type your answer here (optional)" />
+    </div>
+
+    <div class="mt-4">
+      <a href="scratch.html" class="text-light">Back to Scratch Page</a>
+    </div>
+  </div>
+
+<script>
+  const riddles = [
+    {q: "I speak without a mouth and hear without ears. I have nobody, but I come alive with wind. What am I?", a: "An echo"},
+    {q: "I’m light as a feather, yet the strongest man can’t hold me for much longer than a minute. What am I?", a: "Breath"},
+    {q: "I have branches, but no fruit, trunk or leaves. What am I?", a: "A bank"},
+    {q: "The more you take, the more you leave behind. What am I?", a: "Footsteps"},
+    {q: "What has keys but can't open locks?", a: "A piano"}
+  ];
+
+  const riddleText = document.getElementById('riddleText');
+  const riddleAnswer = document.getElementById('riddleAnswer');
+  const newBtn = document.getElementById('newBtn');
+  const showBtn = document.getElementById('showBtn');
+  const copyBtn = document.getElementById('copyBtn');
+
+  let current = null;
+
+  function pickRiddle(){
+    const i = Math.floor(Math.random()*riddles.length);
+    current = riddles[i];
+    riddleText.textContent = current.q;
+    riddleAnswer.style.display = 'none';
+    riddleAnswer.textContent = "";
+  }
+
+  newBtn.addEventListener('click', pickRiddle);
+
+  showBtn.addEventListener('click', ()=>{
+    if (!current) {
+      riddleAnswer.style.display = 'block';
+      riddleAnswer.textContent = "No riddle yet. Press New Riddle.";
+      return;
+    }
+    riddleAnswer.style.display = 'block';
+    riddleAnswer.textContent = "Answer: " + current.a;
+  });
+
+  copyBtn.addEventListener('click', ()=>{
+    if (!current) return;
+    navigator.clipboard?.writeText(current.q).then(()=> {
+      copyBtn.textContent = 'Copied!';
+      setTimeout(()=> copyBtn.textContent = 'Copy Riddle', 1200);
+    }).catch(()=> {
+      copyBtn.textContent = 'Copy failed';
+      setTimeout(()=> copyBtn.textContent = 'Copy Riddle', 1200);
+    });
+  });
+
+  // allow enter to reveal guess vs answer (non-strict)
+  document.getElementById('guess').addEventListener('keydown', (e)=>{
+    if (e.key === 'Enter') {
+      const guess = e.target.value.trim();
+      if (!guess || !current) return;
+      const normalized = guess.toLowerCase();
+      const answer = current.a.toLowerCase();
+      const ok = answer.includes(normalized) || normalized.length > 0 && normalized.length >= 3 && answer.split(' ').some(w => w.startsWith(normalized));
+      riddleAnswer.style.display = 'block';
+      riddleAnswer.textContent = ok ? "Nice guess — it's " + current.a : "Not quite — answer: " + current.a;
+    }
+  });
+</script>
+</body>
+</html>

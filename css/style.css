@@ -1,0 +1,70 @@
+:root{
+  --brand-orange: #ff6a00;
+  --brand-dark: #0b0b0b;
+  --muted: #bdbdbd;
+  --bg: #0f0f0f;
+}
+
+/* Global */
+* { box-sizing: border-box; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #eee;
+  background-color: var(--bg);
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* Theme helpers */
+.bg-black-theme { background-color: var(--brand-dark) !important; }
+.text-orange { color: var(--brand-orange) !important; }
+.hero-orange { background: linear-gradient(90deg,#1a1a1a 0%,#0f0f0f 100%); border-bottom: 4px solid var(--brand-orange); padding: 48px 0; }
+.btn-outline-light { color: #fff; border: 1px solid rgba(255,255,255,0.12); background: transparent; }
+.btn-dark { background: var(--brand-dark); color: #fff; border: 1px solid rgba(255,255,255,0.04); }
+
+/* Profile picture */
+.profile-pic {
+  object-fit: cover;
+  background: #222;
+  display: inline-block;
+}
+
+/* Scratch hero */
+.scratch-hero {
+  background-color: #111111;
+  padding: 48px 0;
+  margin-bottom: 18px;
+  border-left: 6px solid var(--brand-orange);
+}
+
+/* Boxes used on scratch page */
+.box {
+  border: 1px solid #222;
+  padding: 18px;
+  margin-bottom: 18px;
+  border-radius: 8px;
+  background: #0f0f0f;
+}
+
+/* Scratch image */
+.scratch-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid #222;
+}
+
+/* Small navbar */
+.topnav { background: #0f0f0f; padding: 8px 0; border-bottom: 1px solid #222; color:#ccc; }
+
+/* Video/tableau wrappers */
+.video-wrapper, .tableau-wrapper { max-width: 100%; overflow: hidden; margin-top: 8px; }
+
+/* Utilities */
+.lead { color: var(--muted); }
+footer small { color: #9a9a9a; }
+
+/* Responsive tweaks */
+@media (min-width: 768px){
+  .scratch-hero .container { display:flex; align-items:center; gap:24px; }
+}
